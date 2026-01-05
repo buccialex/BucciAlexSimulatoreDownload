@@ -14,7 +14,8 @@ public class BucciAlexSimulatoreDownload {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        
+        GUIDownload app = new GUIDownload();
+        app.setVisible(true);
         
         
     }

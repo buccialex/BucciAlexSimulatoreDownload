@@ -4,11 +4,17 @@
  */
 package buccialexsimulatoredownload;
 
+import java.util.Timer;
+import java.util.TimerTask;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author bucci.alex
  */
 public class GUIDownload extends javax.swing.JFrame {
+    Timer t;
+    Download d;
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(GUIDownload.class.getName());
 
@@ -17,6 +23,20 @@ public class GUIDownload extends javax.swing.JFrame {
      */
     public GUIDownload() {
         initComponents();
+        
+        lblVelocita.setText(sldVelocita.getValue() + " Mb/s");
+
+    
+        Timer timerGrafica = new Timer();
+        TimerTask taskGrafica = new TimerTask() {
+        @Override
+            public void run() {
+                lblVelocita.setText(sldVelocita.getValue() + " Mb/s");
+            }
+        };
+    
+    
+        timerGrafica.scheduleAtFixedRate(taskGrafica, 0, 10);
     }
 
     /**
@@ -32,19 +52,20 @@ public class GUIDownload extends javax.swing.JFrame {
         jButton3 = new javax.swing.JButton();
         jTextField1 = new javax.swing.JTextField();
         jPanel1 = new javax.swing.JPanel();
-        jProgressBar1 = new javax.swing.JProgressBar();
+        pgbStato = new javax.swing.JProgressBar();
         jLabel1 = new javax.swing.JLabel();
         txtNomeFile = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
         txtDimensioneFile = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
         sldVelocita = new javax.swing.JSlider();
+        lblVelocita = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
-        jButton1 = new javax.swing.JButton();
+        btnPausa = new javax.swing.JButton();
         btnAvvia = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
+        btnReset = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jTextPane1 = new javax.swing.JTextPane();
+        txtpLogDownload = new javax.swing.JTextPane();
 
         jToggleButton1.setText("jToggleButton1");
 
@@ -56,11 +77,12 @@ public class GUIDownload extends javax.swing.JFrame {
 
         jPanel1.setBackground(java.awt.SystemColor.activeCaption);
 
-        jProgressBar1.setBackground(new java.awt.Color(102, 255, 102));
-        jProgressBar1.setBorder(javax.swing.BorderFactory.createMatteBorder(1, 1, 1, 1, new java.awt.Color(255, 255, 0)));
-        jProgressBar1.setMaximumSize(new java.awt.Dimension(32767, 32767));
-        jProgressBar1.setMinimumSize(new java.awt.Dimension(10, 10));
-        jProgressBar1.setName("pbStatoPercentuale"); // NOI18N
+        pgbStato.setBackground(javax.swing.UIManager.getDefaults().getColor("Button.disabledText"));
+        pgbStato.setForeground(new java.awt.Color(102, 255, 51));
+        pgbStato.setBorder(javax.swing.BorderFactory.createMatteBorder(1, 1, 1, 1, new java.awt.Color(255, 255, 0)));
+        pgbStato.setMaximumSize(new java.awt.Dimension(32767, 32767));
+        pgbStato.setMinimumSize(new java.awt.Dimension(10, 10));
+        pgbStato.setName("pbStatoPercentuale"); // NOI18N
 
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setText("Nome File:");
@@ -79,6 +101,8 @@ public class GUIDownload extends javax.swing.JFrame {
 
         sldVelocita.setName("slrVelocita"); // NOI18N
 
+        lblVelocita.setText("jLabel4");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -86,7 +110,7 @@ public class GUIDownload extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jProgressBar1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(pgbStato, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -95,7 +119,9 @@ public class GUIDownload extends javax.swing.JFrame {
                         .addComponent(jLabel2)
                         .addGap(18, 18, 18)
                         .addComponent(txtDimensioneFile, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(lblVelocita)
+                        .addGap(15, 15, 15))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel3)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -109,16 +135,22 @@ public class GUIDownload extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
                     .addComponent(txtNomeFile, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2)
-                    .addComponent(txtDimensioneFile, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 16, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel2)
+                            .addComponent(txtDimensioneFile, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 16, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(lblVelocita)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
                     .addComponent(sldVelocita, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jProgressBar1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(pgbStato, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
 
@@ -126,8 +158,14 @@ public class GUIDownload extends javax.swing.JFrame {
 
         jPanel2.setBackground(java.awt.SystemColor.control);
 
-        jButton1.setText("Pausa");
-        jButton1.setName("btnPausa"); // NOI18N
+        btnPausa.setText("Pausa");
+        btnPausa.setEnabled(false);
+        btnPausa.setName("btnPausa"); // NOI18N
+        btnPausa.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnPausaActionPerformed(evt);
+            }
+        });
 
         btnAvvia.setText("Avvia");
         btnAvvia.setName("btnAvvia"); // NOI18N
@@ -137,8 +175,13 @@ public class GUIDownload extends javax.swing.JFrame {
             }
         });
 
-        jButton4.setText("Reset");
-        jButton4.setName("btnReset"); // NOI18N
+        btnReset.setText("Reset");
+        btnReset.setName("btnReset"); // NOI18N
+        btnReset.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnResetActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -147,9 +190,9 @@ public class GUIDownload extends javax.swing.JFrame {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnPausa, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btnAvvia, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 88, Short.MAX_VALUE)
-                    .addComponent(jButton4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(btnReset, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
@@ -158,9 +201,9 @@ public class GUIDownload extends javax.swing.JFrame {
                 .addGap(14, 14, 14)
                 .addComponent(btnAvvia)
                 .addGap(18, 18, 18)
-                .addComponent(jButton1)
+                .addComponent(btnPausa)
                 .addGap(18, 18, 18)
-                .addComponent(jButton4)
+                .addComponent(btnReset)
                 .addContainerGap(183, Short.MAX_VALUE))
         );
 
@@ -168,11 +211,11 @@ public class GUIDownload extends javax.swing.JFrame {
 
         jScrollPane2.setBackground(java.awt.SystemColor.text);
 
-        jTextPane1.setBackground(java.awt.SystemColor.text);
-        jTextPane1.setBorder(new javax.swing.border.MatteBorder(null));
-        jTextPane1.setEnabled(false);
-        jTextPane1.setName("txtpLogDownload"); // NOI18N
-        jScrollPane2.setViewportView(jTextPane1);
+        txtpLogDownload.setBackground(java.awt.SystemColor.text);
+        txtpLogDownload.setBorder(new javax.swing.border.MatteBorder(null));
+        txtpLogDownload.setForeground(new java.awt.Color(0, 0, 0));
+        txtpLogDownload.setName("txtpLogDownload"); // NOI18N
+        jScrollPane2.setViewportView(txtpLogDownload);
 
         getContentPane().add(jScrollPane2, java.awt.BorderLayout.CENTER);
 
@@ -180,8 +223,48 @@ public class GUIDownload extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnAvviaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAvviaActionPerformed
-        Download d = new Download(Integer.parseInt(txtDimensioneFile.getText()), txtNomeFile.getText(), sldVelocita.getValue());
+        btnAvvia.setEnabled(false);
+        btnPausa.setEnabled(true);
+        if (d == null) {
+            d = new Download(Integer.parseInt(txtDimensioneFile.getText()), txtNomeFile.getText(), sldVelocita.getValue());
+        }
+        t = new Timer();
+        TimerTask task = new TimerTask(){
+            @Override
+            public void run() {
+                if(!d.scarica()){
+                    
+                    pgbStato.setValue(d.getAvanzamentoPercentuale());
+                    txtpLogDownload.setText(d.toString() + "\n");
+                } else {
+                    t.cancel();
+                    JOptionPane.showMessageDialog(null, "Download terminato!");
+                    
+                
+            }
+            }
+        };
+        t.scheduleAtFixedRate(task, 0, 1000);
+        
+        
     }//GEN-LAST:event_btnAvviaActionPerformed
+
+    private void btnPausaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPausaActionPerformed
+        btnPausa.setEnabled(false);
+        btnAvvia.setEnabled(true);
+        t.cancel();
+        t.purge();
+        txtpLogDownload.setText(txtpLogDownload.getText() + "IN PAUSA");
+    }//GEN-LAST:event_btnPausaActionPerformed
+
+    private void btnResetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnResetActionPerformed
+        t.cancel();
+        d = null;
+        pgbStato.setValue(0);
+        txtpLogDownload.setText("");
+        btnPausa.setEnabled(false);
+        btnAvvia.setEnabled(true);
+    }//GEN-LAST:event_btnResetActionPerformed
 
     /**
      * @param args the command line arguments
@@ -213,21 +296,22 @@ public class GUIDownload extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAvvia;
-    private javax.swing.JButton jButton1;
+    private javax.swing.JButton btnPausa;
+    private javax.swing.JButton btnReset;
     private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
-    private javax.swing.JProgressBar jProgressBar1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextPane jTextPane1;
     private javax.swing.JToggleButton jToggleButton1;
+    private javax.swing.JLabel lblVelocita;
+    private javax.swing.JProgressBar pgbStato;
     private javax.swing.JSlider sldVelocita;
     private javax.swing.JTextField txtDimensioneFile;
     private javax.swing.JTextField txtNomeFile;
+    private javax.swing.JTextPane txtpLogDownload;
     // End of variables declaration//GEN-END:variables
 }
