@@ -4,19 +4,28 @@
  */
 package buccialexsimulatoredownload;
 
-import java.util.Timer;
+
 
 /**
  *
  * @author Bux
  */
 public class Download {
-    private int dimensioneFile;
-    private String nomeFile;
+    /**
+     * attributi
+     */
+    private final int dimensioneFile;
+    private final String nomeFile;
     private int avanzamentoPercentuale;
-    private int velocitaMB;
+    private final int velocitaMB;
     private int scaricati;
 
+    /**
+     * costruttore download
+     * @param dimensioneFile dimensione del file
+     * @param nomeFile nome del file
+     * @param velocitaMB velocità del download
+     */
     public Download(int dimensioneFile, String nomeFile, int velocitaMB) {
         this.dimensioneFile = dimensioneFile;
         this.nomeFile = nomeFile;
@@ -24,38 +33,18 @@ public class Download {
         this.avanzamentoPercentuale = 0;
     }
 
-    public int getDimensioneFile() {
-        return dimensioneFile;
-    }
-
-    public void setDimensioneFile(int dimensioneFile) {
-        this.dimensioneFile = dimensioneFile;
-    }
-
-    public String getNomeFile() {
-        return nomeFile;
-    }
-
-    public void setNomeFile(String nomeFile) {
-        this.nomeFile = nomeFile;
-    }
-
+   /**
+    * getter avanzamento percentuale
+    * @return l'avanzamento percentuale
+    */
     public int getAvanzamentoPercentuale() {
         return avanzamentoPercentuale;
     }
 
-    public void setAvanzamentoPercentuale(int avanzamentoPercentuale) {
-        this.avanzamentoPercentuale = avanzamentoPercentuale;
-    }
-
-    public int getVelocitaMB() {
-        return velocitaMB;
-    }
-
-    public void setVelocitaMB(int velocitaMB) {
-        this.velocitaMB = velocitaMB;
-    }
-    
+    /**
+     * scarica
+     * @return se il download è terminato
+     */
     public boolean scarica(){
         if(scaricati < dimensioneFile){
             scaricati += velocitaMB;
@@ -66,6 +55,10 @@ public class Download {
         return true;
     }
 
+    /**
+     * override toString
+     * @return stampa degli attributi dell'oggetto download
+     */
     @Override
     public String toString() {
         return "Dimensione: " + dimensioneFile + "\n" + "Nome: " + nomeFile + "\n" + "Avanzamento: " + avanzamentoPercentuale + "\n" + "Scaricati: " + scaricati;
